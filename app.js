@@ -82,7 +82,7 @@ db.once('open', function () {
   }); // Create route end
 
   // Restful show route
-  app.get("/blogs/:id", function (req, res) {
+  app.get("/blogs/:id",isLoggedIn, function (req, res) {
     Blog.findById(req.params.id, function (err, foundPost) {
       if (err) {
         console.log(err);
@@ -170,6 +170,24 @@ db.once('open', function () {
     res.render("register/login");
   });
 
+  
+
+  // Login POST
+  app.post("/login", passport.authenticate("local", {
+    "successRedirect": "/blogs",
+    "failureRedirect": "/login"
+  }), function(req, res){
+  });
+
+
+
+  //middleware
+  function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+      return next();
+    }
+    res.redirect("/login");
+  }
 
 
 }); //database
