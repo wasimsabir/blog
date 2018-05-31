@@ -3,18 +3,33 @@ var wasimExpress = require("express"),
   bodyParser = require("body-parser"),
   expressSanitizer = require("express-sanitizer");
   methodOverride = require('method-override'),
-  user =             require("./models/user"),
+  User =             require("./models/user"),
   app = wasimExpress();
+  var passport = require("passport");
+  var localStrategy = require("passport-local");
+  var passportLocalMongoose = require("passport-local-mongoose");
   var Blog = require("./models/blog");
 app.set("view engine", "ejs");
 app.use(wasimExpress.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({
   "extended": true
 }));
+app.use(require("express-session")({
+  "secret": "Saifu",
+  "resave": false,
+  "saveUninitialized": false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use(expressSanitizer()); // must use after bodyParser use, and before routes
 app.use(methodOverride('_method'));
 
-//database connection
+//database connection blogy
 mongoose.connect("mongodb://localhost/blogApp");
 
 var db = mongoose.connection;
@@ -127,6 +142,23 @@ db.once('open', function () {
   // Register route GET
   app.get("/register", function(req, res){
     res.render("register/register");
+  });
+
+
+
+  // Register POST
+  app.post("/register", function(req, res){
+    User.register(new User({"name": req.body.name, "username": req.body.username}), req.body.password, function(err){
+      if(err){
+        console.log(err);
+        return res.redirect("/register");
+      }
+      else{
+        passport.authenticate("local")(req, res, function(){
+          res.redirect("/blogs");
+        });
+      }
+    });
   });
 
 
