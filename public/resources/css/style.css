@@ -1,0 +1,14 @@
+div.jumbotron h1.display-1 {
+  color: #fff !important;
+}
+body{
+  background-color: aquamarine;
+}
+
+.navBg {
+  background-color:#f19066;
+}
+
+.card-img-top {
+  height: auto;
+}

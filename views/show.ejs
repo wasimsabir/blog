@@ -1,0 +1,26 @@
+<% include ./partials/header %>
+  <div class="container">
+    <div class="card mb-3 w-100">
+      <img class="card-img-top w-100" src="<%= post.image %>" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">
+          <%= post.title %>
+        </h5>
+        <div class="description">
+          <%- post.description %>
+        </div>
+        <p class="card-text">
+          <small class="text-muted">
+            <%= post.created.toDateString(); %>
+          </small>
+        </p>
+        <a href="/blogs/<%= post._id %>/edit" class="btn btn-warning">Edit</a>
+        <form class="d-inline" action="/blogs/<%= post._id; %>?_method=Delete" method="POST">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- end container -->
+
+  <% include ./partials/footer %>

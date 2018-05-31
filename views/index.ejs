@@ -1,0 +1,37 @@
+<% include ./partials/header %>
+  <div class="container con">
+    <div class="jumbotron bg-warning">
+      <h1 class="display-1">Welcome to blogs</h1>
+    </div>
+    <!-- jumbotron ends -->
+    <% var j = 1; %>
+      
+        <div class="card-group">
+            <% blog.forEach(function(el, i, blog){  %>
+          <div class="card m-2">
+            <img class="card-img-top" src="<%= el.image; %>" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">
+                <%=el.title; %>
+              </h5>
+              <%- el.description.slice(0, 182) + "..."; %>
+                <p class="card-text">
+                  <small class="text-muted">
+                    <%= el.created.toDateString(); %>
+                  </small>
+                </p>
+                <a href="/blogs/<%= el._id %>" class="btn btn-warning btn-lg bt-center d-block">View</a>
+            </div>
+          </div>
+          <!-- card -->
+          <% if(j % 3 === 0) { %>
+          <div class="w-100"> </div>
+            <% } %>
+          <% j++; }) %>
+            </div>
+            <!-- card group ends -->
+
+        </div>
+  <!-- container ends -->
+
+  <% include ./partials/footer %>
