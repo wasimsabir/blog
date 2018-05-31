@@ -3,6 +3,7 @@ var wasimExpress = require("express"),
   bodyParser = require("body-parser"),
   expressSanitizer = require("express-sanitizer");
   methodOverride = require('method-override'),
+  user =             require("./models/user"),
   app = wasimExpress();
   var Blog = require("./models/blog");
 app.set("view engine", "ejs");
@@ -33,7 +34,7 @@ db.once('open', function () {
       if (err) {
         console.log(err);
       } else {
-        res.render("index", {
+        res.render("blog/index", {
           blog: foundBlog
         });
       }
@@ -44,7 +45,7 @@ db.once('open', function () {
 
   // Restful New route
   app.get("/blogs/new", function (req, res) {
-    res.render("new");
+    res.render("blog/new");
   }); // new route end
 
   // Restful create route
@@ -58,19 +59,20 @@ db.once('open', function () {
         console.log(err);
       } else {
         console.log(createdPost);
-        res.redirect("/blogs");
+        res.redirect("blogs");
       }
 
     }); //blog-create end
 
   }); // Create route end
+
   // Restful show route
   app.get("/blogs/:id", function (req, res) {
     Blog.findById(req.params.id, function (err, foundPost) {
       if (err) {
         console.log(err);
       } else {
-        res.render("show", {
+        res.render("blog/show", {
           "post": foundPost
         });
       }
@@ -86,7 +88,7 @@ db.once('open', function () {
       if (err) {
         console.log(err);
       } else {
-        res.render("edit", {
+        res.render("blog/edit", {
           post: postFound
         });
       }
@@ -118,6 +120,25 @@ db.once('open', function () {
       }
     }); // end find by id and remove
   }); // end delete route
+
+
+
+
+  // Register route GET
+  app.get("/register", function(req, res){
+    res.render("register/register");
+  });
+
+
+
+
+
+  // Log in route GET
+  app.get("/login", function(req, res){
+    res.render("register/login");
+  });
+
+
 
 }); //database
 

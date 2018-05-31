@@ -1,0 +1,24 @@
+<% include ../partials/header %>
+  <div class="container">
+    <h1 class="text-center mt-4 text-dark">Register</h1>
+    <div class="w-50 mx-auto">
+      <form action="/blogs" method="POST">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" class="form-control" id="fullName" placeholder="Full name" name="user[fullName]">
+        </div>
+        <div class="form-group">
+          <label for="userName">User name</label>
+          <input type="text" class="form-control" id="userName" placeholder="Username" name="user[userName]">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="password" name="user[password]">
+        </div>
+        <button type="submit" class="btn btn-warning">Submit</button>
+      </form>
+    </div>
+  </div>
+
+
+  <% include ../partials/footer %>
