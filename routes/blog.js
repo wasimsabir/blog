@@ -1,5 +1,6 @@
 var Blog = require("../models/blog");
 var wasimExpress = require("express");
+var middleware = require("../middleware/mid");
 var router = wasimExpress.Router();
 
 //Restful Index route
@@ -47,7 +48,7 @@ router.post("/blogs", function (req, res) {
 
 
 // Restful show route
-router.get("/blogs/:id", isLoggedIn, function (req, res) {
+router.get("/blogs/:id", middleware.isLoggedIn, function (req, res) {
   Blog.findById(req.params.id, function (err, foundPost) {
     if (err) {
       console.log(err);
@@ -109,14 +110,6 @@ router.delete("/blogs/:id", function(req, res){
   }); // end find by id and remove
 }); // end delete route
 
-
-//middleware
-function isLoggedIn(req, res, next){
-  if(req.isAuthenticated()){
-    return next();
-  }
-  res.redirect("/login");
-}
 
 
 module.exports = router;

@@ -31,8 +31,13 @@ passport.deserializeUser(User.deserializeUser());
 app.use(expressSanitizer()); // must use after bodyParser use, and before routes
 app.use(methodOverride('_method'));
 
+app.use(function(req, res, next){
+  res.locals.currentUser = req.user;
+  next();
+});
 app.use(blogRoutes);
 app.use(authRoutes);
+
 
 //database connection blogy
 mongoose.connect("mongodb://localhost/blogApp");
@@ -54,13 +59,6 @@ db.once('open', function () {
   
 
 
-  //middleware
-  function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-      return next();
-    }
-    res.redirect("/login");
-  }
 
 
 }); //database
