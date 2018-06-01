@@ -10,6 +10,7 @@ var wasimExpress = require("express"),
   var passportLocalMongoose = require("passport-local-mongoose");
   var Blog = require("./models/blog");
   var blogRoutes = require("./routes/blog");
+  var authRoutes = require("./routes/auth");
 app.set("view engine", "ejs");
 app.use(wasimExpress.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({
@@ -31,6 +32,7 @@ app.use(expressSanitizer()); // must use after bodyParser use, and before routes
 app.use(methodOverride('_method'));
 
 app.use(blogRoutes);
+app.use(authRoutes);
 
 //database connection blogy
 mongoose.connect("mongodb://localhost/blogApp");
@@ -49,46 +51,7 @@ db.once('open', function () {
   
 
 
-  // Register route GET
-  app.get("/register", function(req, res){
-    res.render("register/register");
-  });
-
-
-
-  // Register POST
-  app.post("/register", function(req, res){
-    User.register(new User({"name": req.body.name, "username": req.body.username}), req.body.password, function(err){
-      if(err){
-        console.log(err);
-        return res.redirect("/register");
-      }
-      else{
-        passport.authenticate("local")(req, res, function(){
-          res.redirect("/blogs");
-        });
-      }
-    });
-  });
-
-
-
-
-
-  // Log in route GET
-  app.get("/login", function(req, res){
-    res.render("register/login");
-  });
-
   
-
-  // Login POST
-  app.post("/login", passport.authenticate("local", {
-    "successRedirect": "/blogs",
-    "failureRedirect": "/login"
-  }), function(req, res){
-  });
-
 
 
   //middleware
